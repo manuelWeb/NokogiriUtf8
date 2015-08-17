@@ -30,7 +30,6 @@ fr.tohtml
 myfile = File.read('indexC.html')
 # extraction zone HTML pour prod .gsub(' ','&nbsp;')
 doc = Nokogiri::HTML.parse(myfile, nil, "UTF-8")
-
 prod = doc.at_css("#evtFirst_Link")
 
 File.open("index.html", "w") do |file|
@@ -38,12 +37,9 @@ File.open("index.html", "w") do |file|
 end
 
 a = File.read("index.html").force_encoding("UTF-8")
-puts a
-
+# puts a.gsub('<img .','mon image')
+# puts a.gsub(/(<img.*?)>/,/1\//)
+# .gsub('(<img.*?)>','<$1" />')
 File.open("index.html", "w") do |file|
-  file.puts a.gsub('é','&eacute;')
+  file.puts a.gsub('é','&eacute;').gsub(' ','&nbsp;')
 end
-
-
-
-puts "Développement".gsub('é','&eacute;')
