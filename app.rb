@@ -32,14 +32,15 @@ myfile = File.read('indexC.html')
 # extraction zone HTML : Noko::XML important pour self-close tag
 doc = Nokogiri::XML(myfile, nil, "UTF-8")
 prod = doc.at_css("#evtFirst_Link")
+srcJs = doc.at_css('[src~="js-btn.js"]')
 File.open("index.html", "w") do |file|
   file.puts prod
+  # placer le script JS en fin de document
+  file.puts srcJs
 end
-
+# **attention** CODAGE a compléter (GSUB)
 a = File.read("index.html").force_encoding("UTF-8")
 a = a.gsub('é','&eacute;')
+a = HtmlBeautifier.beautify(a, tab_stops: 1)
 File.open("index.html", "w").puts a
 
-# File.open("index.html", "w") do |file|
-#   file.puts a.gsub('é','&eacute;').gsub(' ','&nbsp;')
-# end
