@@ -27,17 +27,19 @@ fr.tohtml
 # fr.htmlEncodeEnt
 # system("explorer #{fr.out}")
 
+# creation fichier html **attention** au codage des char liste non complete (gsub)
 myfile = File.read('indexC.html')
-# extraction zone HTML pour prod .gsub(' ','&nbsp;')
+# extraction zone HTML : Noko::XML important pour self-close tag
 doc = Nokogiri::XML(myfile, nil, "UTF-8")
 prod = doc.at_css("#evtFirst_Link")
-
 File.open("index.html", "w") do |file|
   file.puts prod
 end
 
 a = File.read("index.html").force_encoding("UTF-8")
-puts a
+a = a.gsub('é','&eacute;')
+File.open("index.html", "w").puts a
+
 # File.open("index.html", "w") do |file|
 #   file.puts a.gsub('é','&eacute;').gsub(' ','&nbsp;')
 # end
