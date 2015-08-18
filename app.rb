@@ -30,12 +30,13 @@ fr.tohtml
 # creation fichier html **attention** au codage des char liste non complete (gsub)
 myfile = File.read('indexC.html')
 # extraction zone HTML : Noko::XML important pour self-close tag
-doc = Nokogiri::XML(myfile, nil, "UTF-8")
+doc = Nokogiri::HTML(myfile, nil, "UTF-8")
 prod = doc.at_css("#evtFirst_Link")
 # srcJs = doc.at_css('[src~="js-btn.js"]')
 docscr = Nokogiri::HTML(myfile, nil, "UTF-8")
 srcJs = docscr.at_css('[src~="js-btn.js"]')
-puts srcJs
+puts "\ncode indexC.html : \n\n #{doc}  \n"
+puts "script to end of index.html : \n\n #{srcJs}"
 File.open("index.html", "w") do |file|
   file.puts prod
   # placer le script JS en fin de document
@@ -43,7 +44,8 @@ File.open("index.html", "w") do |file|
 end
 # **attention** CODAGE a compléter (GSUB)
 a = File.read("index.html").force_encoding("UTF-8")
-a = a.gsub('é','&eacute;')
+# get regex pattern ex (<img.*) > \1
+a = a.gsub(/(<img.*?)>/,'\1 />').gsub('é','&eacute;')
 a = HtmlBeautifier.beautify(a, tab_stops: 2)
 File.open("index.html", "w").puts a
 
